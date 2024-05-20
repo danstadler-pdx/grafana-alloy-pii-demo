@@ -1,0 +1,157 @@
+// this configures logging of Alloy itself
+logging {
+  level  = "debug"
+  format = "logfmt"
+}
+
+// Import the Masking module
+// - https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy
+//
+// - note: just using a local copy here - better methods recommended - 
+//   https://grafana.com/docs/alloy/latest/concepts/modules/#importing-modules
+//
+import.file "mask_module" {
+  filename = env("MASK_MODULE_PATH")
+}
+
+// Configure each of the components that will be part of
+// the masking chain.
+// (this section might be a good candidate for moving to a module.)
+mask_module.mask_credit_card "mask_cc" {
+  forward_to = [mask_module.mask_email.mask_em.receiver]
+}
+mask_module.mask_email "mask_em" {
+  forward_to = [mask_module.mask_ipv4.mask_i4.receiver]
+}
+mask_module.mask_ipv4 "mask_i4" {
+  forward_to = [mask_module.mask_ipv6.mask_i6.receiver]
+}
+mask_module.mask_ipv6 "mask_i6" {
+  forward_to = [mask_module.mask_phone.mask_ph.receiver]
+}
+mask_module.mask_phone "mask_ph" {
+  forward_to = [mask_module.mask_ssn.mask_sn.receiver]
+}
+mask_module.mask_ssn "mask_sn" {
+  forward_to = [loki.write.default.receiver]  // "loki.write" is declared further down in this file.
+}
+
+// Define the log data to read
+loki.source.file "local_files" {
+    targets    = local.file_match.tmplogs.targets
+    forward_to = [loki.relabel.add_static_label.receiver]
+}
+// dependency:
+local.file_match "tmplogs" {
+    path_targets = [{"__path__" = "/tmp/alloy-logs/*.log"}]		// could also be defined an an env var.
+}
+
+// note that at this point we are not forwarding yet to 
+// the top of the chain of masking components; first, and
+// just for this demo, we are forwarding into a block of 
+// components that statically add some labels needed for
+// this version of the demo. 
+//
+// ie. the above forward_to is:
+// "loki.relabel.add_static_label.receiver"
+//
+// but in a real (i.e. k8s environment) the forward could just be:
+// "mask_module.mask_credit_card.mask_cc.receiver"
+
+// final step - write to cloud logs
+loki.write "default" {
+  endpoint {
+	url = env("LOKI_URL")
+    basic_auth {
+      username = nonsensitive(remote.vault.my_vault.data.username)
+      password = nonsensitive(remote.vault.my_vault.data.password)
+    }
+  }
+}
+// dependencies for loki.write.default (see notes below)
+remote.vault "my_vault" {
+  server = env("VAULT_SERVER")
+  path   = env("VAULT_PATH")
+  auth.token {
+    token = local.file.vault_token.content
+  }
+}
+local.file "vault_token" {
+  filename  = env("VAULT_TOKEN_PATH")
+  is_secret = true
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////
+// we have to statically add some labels for this demo:
+//
+// 1) one just for making sure we always have at least one 
+//    selectable label; i.e. "job=loggerapp"
+//
+// 2) one for each of the masking types we will demo;
+//    - In a real environment, the assumption is that the 
+//      required k8s annotations would already be in place, 
+//      and they would already be converted to labels at 
+//      this point.
+
+loki.relabel "add_static_label" {
+    rule {
+        target_label = "job"
+        replacement  = "loggerapp123"
+    }
+    // In a real environment, we would not need the next step (adding fake annotations);
+	// would just go to the first masking step from here.
+    forward_to = [loki.relabel.add_fake_k8s_annotation_cc.receiver]
+	// i.e. that forward would actually be: 
+	// forward_to = [mask_module.mask_credit_card.mask_cc]
+}
+loki.relabel "add_fake_k8s_annotation_cc" {
+    rule {
+        target_label = "logs_grafana_com_mask_credit_card"  // we have to add the underscores manually here
+        replacement  = "true"
+    }
+	forward_to = [loki.relabel.add_fake_k8s_annotation_em.receiver]
+}
+loki.relabel "add_fake_k8s_annotation_em" {
+    rule {
+        target_label = "logs_grafana_com_mask_email"
+        replacement  = "true"
+    }
+	forward_to = [loki.relabel.add_fake_k8s_annotation_i4.receiver]
+}
+loki.relabel "add_fake_k8s_annotation_i4" {
+    rule {
+        target_label = "logs_grafana_com_mask_ipv4"
+        replacement  = "true"
+    }
+	forward_to = [loki.relabel.add_fake_k8s_annotation_i6.receiver]
+}
+loki.relabel "add_fake_k8s_annotation_i6" {
+    rule {
+        target_label = "logs_grafana_com_mask_ipv6"
+        replacement  = "true"
+    }
+	forward_to = [loki.relabel.add_fake_k8s_annotation_ph.receiver]
+}
+loki.relabel "add_fake_k8s_annotation_ph" {
+    rule {
+        target_label = "logs_grafana_com_mask_phone"
+        replacement  = "true"
+    }
+	forward_to = [loki.relabel.add_fake_k8s_annotation_sn.receiver]
+}
+loki.relabel "add_fake_k8s_annotation_sn" {
+    rule {
+        target_label = "logs_grafana_com_mask_ssn"
+        replacement  = "true"
+    }
+	// now we are done with the fake annotations: forward to the
+	// first actual masking component in the chain
+	forward_to = [mask_module.mask_credit_card.mask_cc.receiver]
+}
