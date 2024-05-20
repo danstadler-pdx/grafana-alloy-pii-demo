@@ -62,24 +62,35 @@ local.file_match "tmplogs" {
 loki.write "default" {
   endpoint {
 	url = env("LOKI_URL")
-    basic_auth {
-      username = nonsensitive(remote.vault.my_vault.data.username)
-      password = nonsensitive(remote.vault.my_vault.data.password)
+
+	// uncomment if using Vault; see README.
+    // basic_auth {
+    //   username = nonsensitive(remote.vault.my_vault.data.username)
+    //   password = nonsensitive(remote.vault.my_vault.data.password)
+    // }
+
+	// uncommment if not using Vault; please exercise caution when using this method.
+	basic_auth {
+      username = "MY_CLOUD_LOGS_TENANT_ID"
+      password = "MY_CLOUD_LOGS_WRITE_TOKEN"
     }
+
   }
 }
+
+// uncomment if using Vault; set up env vars per README.
 // dependencies for loki.write.default (see notes below)
-remote.vault "my_vault" {
-  server = env("VAULT_SERVER")
-  path   = env("VAULT_PATH")
-  auth.token {
-    token = local.file.vault_token.content
-  }
-}
-local.file "vault_token" {
-  filename  = env("VAULT_TOKEN_PATH")
-  is_secret = true
-}
+// remote.vault "my_vault" {
+//   server = env("VAULT_SERVER")
+//   path   = env("VAULT_PATH")
+//   auth.token {
+//     token = local.file.vault_token.content
+//   }
+// }
+// local.file "vault_token" {
+//   filename  = env("VAULT_TOKEN_PATH")
+//   is_secret = true
+// }
 
 
 
