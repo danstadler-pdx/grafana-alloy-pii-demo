@@ -16,7 +16,7 @@ import.file "mask_module" {
   filename = env("MASK_MODULE_PATH")
 
   // [Option 2] with hardcoded values
-  // filename = "[MY_LOCAL_CLONE_PATH]/alloy-modules/mask-module-testing.alloy"
+  // filename = "[MY_LOCAL_CLONE_PATH]/downloaded-alloy-modules/mask-module-testing.alloy"
 
 }
 

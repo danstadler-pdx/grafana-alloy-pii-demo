@@ -29,7 +29,7 @@ Example:
     <snip>
     service do
       environment_variables \
-        MASK_MODULE_PATH:        "[MY_LOCAL_CLONE_PATH]/alloy-modules/mask-module-testing.alloy",
+        MASK_MODULE_PATH:        "[MY_LOCAL_CLONE_PATH]/downloaded-alloy-modules/mask-module-testing.alloy",
         LOKI_URL:                "[MY_LOKI_HOST]",
         CLOUD_LOGS_TENANT_ID:    "[MY_CLOUD_LOGS_TENANT_ID]",
         CLOUD_LOGS_WRITE_TOKEN:  "[MY_CLOUD_LOGS_WRITE_TOKEN]"
