@@ -11,7 +11,13 @@ logging {
 //   https://grafana.com/docs/alloy/latest/concepts/modules/#importing-modules
 //
 import.file "mask_module" {
+
+  // [Option 1] with environment variables
   filename = env("MASK_MODULE_PATH")
+
+  // [Option 2] with hardcoded values
+  // filename = "[MY_LOCAL_CLONE_PATH]/alloy-modules/mask-module-testing.alloy"
+
 }
 
 // Configure each of the components that will be part of
@@ -61,48 +67,27 @@ local.file_match "tmplogs" {
 // final step - write to cloud logs
 loki.write "default" {
   endpoint {
+
+	// [Option 1] with environment variables
 	url = env("LOKI_URL")
 
+	// [Option 2] with hardcoded values
+	// url = "[MY_LOKI_HOST]"
 
-	// 1) uncomment if using Vault; see README.
-
-    // basic_auth {
-    //   username = nonsensitive(remote.vault.my_vault.data.username)
-    //   password = nonsensitive(remote.vault.my_vault.data.password)
-    // }
-
-	// (also uncomment the 2 vault components below:
-	// - remote.vault "my_vault"
-	// - local.file "vault_token"
-
-
-	// 2) uncommment if not using Vault.
 	basic_auth {
-      username = env("MY_CLOUD_LOGS_TENANT_ID")
-      password = env("MY_CLOUD_LOGS_WRITE_TOKEN")
+
+		// [Option 1] with environment variables
+    	username = env("MY_CLOUD_LOGS_TENANT_ID")
+    	password = env("MY_CLOUD_LOGS_WRITE_TOKEN")
+
+		// [Option 2] with hardcoded values
+		//username = "[MY_CLOUD_LOGS_TENANT_ID]"
+		//password = "[MY_CLOUD_LOGS_WRITE_TOKEN]"
+
     }
 
   }
 }
-
-// uncomment if using Vault; set up env vars per README.
-// dependencies for loki.write.default (see notes below)
-// remote.vault "my_vault" {
-//   server = env("VAULT_SERVER")
-//   path   = env("VAULT_PATH")
-//   auth.token {
-//     token = local.file.vault_token.content
-//   }
-// }
-// local.file "vault_token" {
-//   filename  = env("VAULT_TOKEN_PATH")
-//   is_secret = true
-// }
-
-
-
-
-
 
 
 
