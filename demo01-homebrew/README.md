@@ -46,7 +46,10 @@ After doing that, you have to run:
 
 &nbsp;  
 ### 3b) [Option 2] Hardcode variables in your configuration file
-Alternatively, you can use the uncommented lines in alloy.config and add your values directly. 
+Alternatively, you can uncomment and use the example lines in alloy.config and add your values directly. 
+- Remember to work safely with these values; don't check them into source code management or otherwise expose them.
+- Also be sure to comment the lines that pull from env vars.
+- Note that Alloy supports [pulling configuration values from Vault](https://grafana.com/docs/alloy/latest/reference/components/remote.vault/).
 
 &nbsp;  
 ### 4) Replace Alloy's default configuration with your configuration.
