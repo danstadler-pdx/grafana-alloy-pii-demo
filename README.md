@@ -45,5 +45,67 @@ https://github.com/grafana/alloy-modules/pull/18
 
 ## Instructions
 
-TODO
+All of the steps below have been tested on:
+1) Install via Homebrew on MacOS 14.4
+2) Install via Apt on Ubuntu 22.04
+
+The steps below will reflect that choice where appropriate.
+
+### 1) Install Grafana Alloy
+1) Install via Homebrew
+2) Install via Apt
+[Follow the path of your choice](https://grafana.com/docs/alloy/latest/get-started/install/) 
+
+### 2) Install Hashicorp Vault
+Please note that this is optional; alloy-config/config.alloy uses env vars in several locations; for expediency, you have the option of running this demo with hard-coded values instead, in that file. No other files require env vars as of this time.
+
+1) Install via Homebrew
+2) Install via Apt
+[Follow the path of your choice](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install#install-vault)
+[This was also helpful for me.]()
+
+[start the server](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-dev-server)
+
+Copy your root token to a safe location.
+
+### 2) Clone the demo repo
+Use git to clone this repo:
+https://github.com/danstadler-pdx/grafana-alloy-pii-demo
+
+Cd into the project directory.
+
+
+
+
+### 3) Create environment variables Configure alloy-config/config.alloy
+
+Create the following env vars:
+
+// TODO: add some dummy values here which can be checked into git.
+
+export MASK_MODULE_PATH=""
+export LOKI_URL=""
+
+If using Vault:
+export VAULT_SERVER=""
+export VAULT_PATH=""
+export VAULT_TOKEN_PATH=""
+
+If not using Vault: you will need to comment/uncomment the marked lines in the file, and create these env vars:
+export MY_CLOUD_LOGS_TENANT_ID=""
+export MY_CLOUD_LOGS_WRITE_TOKEN=""
+
+
+### 3a) Notes on env vars for OSX/homebrew users:
+
+
+
+### 4) Replace Alloy's default configuration with your configuration.
+Alloy places its main configuration file into specific locations depending on your install choice.
+[find the location for OSX](https://grafana.com/docs/alloy/latest/tasks/configure/configure-macos/#configure-grafana-alloy-on-macos)
+[find the location for Ubuntu](https://grafana.com/docs/alloy/latest/tasks/configure/configure-linux/#configure-grafana-alloy-on-linux)
+
+Back up your default configuration file.
+
+Then, using the tool of your choice, copy/paste the entire content of alloy-config/config.alloy into your machine's actual alloy config.
 

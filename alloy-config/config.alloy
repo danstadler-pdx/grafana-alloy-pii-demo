@@ -63,16 +63,23 @@ loki.write "default" {
   endpoint {
 	url = env("LOKI_URL")
 
-	// uncomment if using Vault; see README.
+
+	// 1) uncomment if using Vault; see README.
+
     // basic_auth {
     //   username = nonsensitive(remote.vault.my_vault.data.username)
     //   password = nonsensitive(remote.vault.my_vault.data.password)
     // }
 
-	// uncommment if not using Vault; please exercise caution when using this method.
+	// (also uncomment the 2 vault components below:
+	// - remote.vault "my_vault"
+	// - local.file "vault_token"
+
+
+	// 2) uncommment if not using Vault.
 	basic_auth {
-      username = "MY_CLOUD_LOGS_TENANT_ID"
-      password = "MY_CLOUD_LOGS_WRITE_TOKEN"
+      username = env("MY_CLOUD_LOGS_TENANT_ID")
+      password = env("MY_CLOUD_LOGS_WRITE_TOKEN")
     }
 
   }
