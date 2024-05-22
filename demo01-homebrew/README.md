@@ -76,7 +76,7 @@ As of May 2024, the documentation lists this location as:
 You should see Alloy's normal startup log messages. The config file is set to "debug" level, so if things don't
 work, you should be able to scan the log messages and see what might have gone wrong.
 
-If Alloy has successfully launched, you can [view its UI in a browser](http://localhost:12345) on the same host you are running this demo on:
+If Alloy has successfully launched, you can [view its UI in a browser](http://localhost:12345) on the host where you are running this demo.
 
 
 
