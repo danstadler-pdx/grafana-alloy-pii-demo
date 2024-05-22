@@ -99,6 +99,11 @@ provided in this demo, this LogQL query should work for you:
 
 ``` {filename="/tmp/alloy-logs/loggerapp.log", job="loggerapp123"} ```
 
+Assuming everything is working, you should be seeing log messages from loggerapp, with redactions where the configured regex rules have detected PII.
+
+![example of redacted logs in Grafana](images/example-redacted-logs.png)
+
+
 &nbsp;  
 ### 5) Stop loggerapp and Alloy
 In the terminal running loggerapp.sh, use ctrl-c to stop the program.
