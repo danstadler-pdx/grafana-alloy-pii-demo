@@ -1,0 +1,3 @@
+local.file_match "tmplogs" {
+    path_targets = [{"__path__" = "/tmp/alloy-logs/*.log"}]		// could also be defined an an env var.
+}
