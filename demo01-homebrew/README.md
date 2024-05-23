@@ -128,11 +128,7 @@ In this first demo, you may have noticed that in config.alloy, there is a block 
 
 ```logs_grafana_com_mask_credit_card=true``` 
 
-would come from k8s annotations.
+would come from k8s annotations, and be flattened into that format by other mecahnisms. 
 
-In other words, you would annotate your deployments with something like
-
-```"logs.grafana.com:mask credit card=true"```
-
-, and by the time the log data reaches the PII masking chain, the annotation would become "flattened" into a label on each log line. This demo just statically writes the flattened labels, since we are not running inside a k8s environment.
+The next demos (Docker, Kubernetes) will introduce more pieces of this, in order to show how this will work in real (i.e. K8s) environments.
 
