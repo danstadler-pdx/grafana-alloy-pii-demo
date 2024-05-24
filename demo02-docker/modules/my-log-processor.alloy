@@ -1,0 +1,128 @@
+/* 
+This demo module is a very simplified version of:
+https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/core/logs.alloy
+
+In demo01-homebrew, we used methods of loading a log file and adding the annotation-based labels
+in a way that is a simple starting point, but doesn't look like our more production-ready
+solutions.
+
+To see an example of how such a module might be called, you can head to this point:
+https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/README.md#usage
+
+--- TODO: write up a bit more that helps explain that. ---
+
+In this module, we'll talk about what each section does, and point back to the equivalent point
+in the Alloy Module that this was based on.
+
+*/
+
+
+declare "my_log_processor" {
+
+  // for these 3 args: take a look at:
+  // https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/core/logs.alloy#L2
+  
+  argument "targets" {
+    comment = "Must be a list() of targets"
+  }
+  argument "forward_to" {
+    comment = "Must be a list(LogsReceiver) where collected logs should be forwarded to"
+  }
+  export "receiver" {
+    value = loki.process.parse.receiver
+  }
+
+
+  // see: https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/core/logs.alloy#L14
+  discovery.relabel "my_relabeling" {
+
+    targets = argument.targets.value
+
+	// In the actual Alloy Module, there is more work done at this point; we have removed 
+	// those examples to keep this demo simple. See the above link, and check out how the 
+	// discovery.relabel component handles setting up labels like:
+	// __path__
+	// __host__
+	// tmp_container_runtime
+	// etc.
+
+	// Remember that not all of these labels will actually make it to the final log storage in 
+	// Loki - some labels come from annotations, and are used while Alloy is going through
+	// your processing logic, but then do not make it to the final list of labels that get added
+	// when logs are sent into Loki. This gives you the flexibility to add annotations, use them 
+	// during processing, but not have them affect your log label cardinality.
+
+	// So what do we actually do in this section, in this demo?
+
+	// Here we add labels, as though they were coming from K8s annoatations such as:
+	// - "logs.grafana.com/mask-credit-card:true",
+	// - "logs.grafana.com/mask-email:true"
+	// - etc.
+	//
+	// By this time, in an actual k8s integration processing chain, those would have been flattened into 
+	// label format as they appear here in target_label.
+	// For example, "logs_grafana_com_mask_credit_card=true", etc.)
+
+	rule {
+		action = "replace"
+		regex = "(.*)"
+		replacement = "true"
+		target_label = "logs_grafana_com_mask_credit_card"
+	}
+	rule {
+		action = "replace"
+		regex = "(.*)"
+		replacement = "true"
+		target_label = "logs_grafana_com_mask_email"
+	}
+	rule {
+		action = "replace"
+		regex = "(.*)"
+		replacement = "true"
+		target_label = "logs_grafana_com_mask_ipv4"
+	}
+	rule {
+		action = "replace"
+		regex = "(.*)"
+		replacement = "true"
+		target_label = "logs_grafana_com_mask_ipv6"
+	}
+	rule {
+		action = "replace"
+		regex = "(.*)"
+		replacement = "true"
+		target_label = "logs_grafana_com_mask_phone"
+	}
+	rule {
+		action = "replace"
+		regex = "(.*)"
+		replacement = "true"
+		target_label = "logs_grafana_com_mask_ssn"
+	}
+  }
+
+
+  // The remaining sections are borrowed from around here in the Alloy Module:
+  // https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/core/logs.alloy#L67
+
+  // As with the above sections, this part is simplified for this demo, but gives you a sense
+  // of how the Alloy module is set up to handle this part of log processing in K8s.
+
+  // use the output of discovery.relabel.worker_logs
+  local.file_match "output_from_my_discovery" {
+    path_targets = discovery.relabel.my_relabeling.output
+  }
+
+  // tail the files
+  loki.source.file "my_source_files" {
+    targets = local.file_match.output_from_my_discovery.targets
+    forward_to = [loki.process.parse.receiver]
+  }
+
+  // parse the logs
+  loki.process "parse" {
+	// In the actual K8s module, there is more work done at this point; we have removed 
+	// it for this simpler demo.	
+    forward_to = argument.forward_to.value
+  }
+}
