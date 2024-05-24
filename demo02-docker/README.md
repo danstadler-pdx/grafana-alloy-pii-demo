@@ -8,7 +8,7 @@ Alloy to read/mask/forward the log files to the Grafana Cloud account that you c
 On the other hand, some things are different in this demo.
 
 1) We stop (mostly) using any local configuration files, and instead pull in configuration from 
-other places.  ** NOTE: this is not complete yet - the files are still local for the moment **
+other places. (*** NOTE: this is not actually complete yet - the files are still local for the moment. More coming soon on that. ***)
 
 2) We show a more realistic way of reading logs and adding the "fake annotation labels". This will look
 much more like how Alloy tends to be configured in production environments, for example when using
@@ -20,6 +20,12 @@ much more like how Alloy tends to be configured in production environments, for 
 ## Instructions
 
 All of the steps below have been tested on MacOS 14.4.
+
+Before starting: if you haven't run through demo01, you might want to head over to that README page and at least familiarize yourself with how it works. 
+
+As with that demo, you will need to clone the repo. Also, until this branch is merged into main, you should run 
+```git switch build-demo01``` so that you are working with the correct materials.
+
 
 &nbsp;  
 ### 1) Install Docker and Docker Compose
@@ -61,5 +67,8 @@ In the root directory of this folder is a file called .env. There are some entri
 
 &nbsp;  
 ### 4) Boot the environment
+If you already have Grafana Agent running in some other way on your machine, you should shut it down first. 
+
+Then run:
 ```docker-compose up```
 
