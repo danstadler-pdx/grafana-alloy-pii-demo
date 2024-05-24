@@ -28,6 +28,17 @@ You are welcome to do this any way you prefer. For the testing I've done with th
 
 &nbsp;  
 ### 2) Take a look at config.alloy
+
+#### *** Temporary notes for this section ***
+For the moment, config.alloy pulls in 2 additional files: one for setting up our logging discovery and 
+labeling, the other is still our local copy of the masking moddule we used in demo01.
+
+The next round of changes will switch over to using the import.git component, and then the next block of 
+text will make more sense.
+
+&nbsp;  
+#### *** Proposed real notes, after import.git is added ***
+
 The file is in this directory. What's very different about this file, vs. the first demo, is that it only does 2 things: 
 1) Configure our logging preferences
 2) Pull down our actual configuration from the GitHub-hosted version of this repository.
@@ -42,6 +53,13 @@ In addition, config-alloy.main also imports the Alloy Modules directly from its 
 
 
 &nbsp;  
-### 3) Boot the environment
+### 3) Set up your environment variables.
+No more support in this demo for hardcoding! Time to do this proper.
 
+In the root directory of this folder is a file called .env. There are some entries commented out, pending the above mentioned changes, but the last 3 you should fill in with the appropriate values for your cloud account.
+
+
+&nbsp;  
+### 4) Boot the environment
+```docker-compose up```
 
