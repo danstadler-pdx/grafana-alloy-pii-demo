@@ -16,11 +16,11 @@ PII use cases.
 &nbsp;  
 ## Demo Options
 
-### 1 - demoing on MacOSX, using homebrew (WORK IN PROGRESS)
+### 1 - demoing on MacOSX, using homebrew (FIRST STABLE VERSION AVAILABLE)
 Please see the README file in the folder "demo01-homebrew".
 
 &nbsp;  
-### 2 - demoing via Docker (NOT STARTED)
+### 2 - demoing via Docker (WORK IN PROGRESS)
 Please see the README file in the folder "demo02-docker".
 
 &nbsp;  
