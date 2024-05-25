@@ -15,8 +15,6 @@ services:
     volumes:
       - ./config.alloy:/etc/alloy/config.alloy
       - loggerapp_logs:/tmp/alloy-logs
-    # environment:
-    #  - NODE_ENV=production
     command: [
       "run",
       "--server.http.listen-addr=0.0.0.0:12345",
