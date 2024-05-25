@@ -14,8 +14,6 @@ services:
     env_file: .env
     volumes:
       - ./config.alloy:/etc/alloy/config.alloy
-      - ./modules/my-log-processor.alloy:/tmp/my-log-processor.alloy
-      - ../downloaded-alloy-modules/mask-module-testing.alloy:/tmp/mask-module-testing.alloy
       - loggerapp_logs:/tmp/alloy-logs
     # environment:
     #  - NODE_ENV=production

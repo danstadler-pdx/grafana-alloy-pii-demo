@@ -7,8 +7,7 @@ Alloy to read/mask/forward the log files to the Grafana Cloud account that you c
 
 On the other hand, some things are different in this demo.
 
-1) We stop (mostly) using any local configuration files, and instead pull in configuration from 
-other places. (*** NOTE: this is not actually complete yet - the files are still local for the moment. More coming soon on that. ***)
+1) Alloy still has a local configuration file, but it's a lot smaller. (See more about this in section 2 below.)
 
 2) We show a more realistic way of reading logs and adding the "fake annotation labels". This will look
 much more like how Alloy tends to be configured in production environments, for example when using
@@ -35,34 +34,18 @@ You are welcome to do this any way you prefer. For the testing I've done with th
 &nbsp;  
 ### 2) Take a look at config.alloy
 
-#### *** Temporary notes for this section ***
-For the moment, config.alloy pulls in 2 additional files: one for setting up our logging discovery and 
-labeling, the other is still our local copy of the masking moddule we used in demo01.
+The file is in the same directory as this README. What's quite different about this file, vs. the version we used in demo01-homebrew, is that most of its actual code comes from 2 module files, which Alloy imports from the git repo for this project.
 
-The next round of changes will switch over to using the import.git component, and then the next block of 
-text will make more sense.
+What this demonstrates is that Alloy can run with a small local configuration, and you can use the SCM/CICD solutions of your choice to manage your Alloy configuration, by importing remote modules.
 
-&nbsp;  
-#### *** Proposed real notes, after import.git is added ***
-
-The file is in this directory. What's very different about this file, vs. the first demo, is that it only does 2 things: 
-1) Configure our logging preferences
-2) Pull down our actual configuration from the GitHub-hosted version of this repository.
-
-What this demonstrates is that Alloy can run with a very minimal local configuration file, and you can use the SCM/CICD solutions of your choice to manage your configurations remotely.
-
-If you follow the thread of what config.alloy loads, you can see that it brings in config-main.alloy from this repo, which is where much of the logic from the first demo now lives. This is where you will also see that we are using a different mechanism for discovering and "fake labeling" our log streams.
-
-In addition, config-alloy.main also imports the Alloy Modules directly from its Github repo, with a tag specified. (Using a specific tag helps you ensure that the version of the modules repo you are using does not change on you.)
-
-(A possible alternative could be for you to fork the Alloy Modules repo into the private repository of your choice, and then import it from there. This would simply give you more control over exactly what code you are importing into your own runtime environment.)
+For more reading on Alloy modules, including other import options than local files and git repos, [head here](https://grafana.com/docs/alloy/latest/concepts/modules/#importing-modules).
 
 
 &nbsp;  
 ### 3) Set up your environment variables.
-No more support in this demo for hardcoding! Time to do this proper.
+Unlike in demo01-homebrew, no more support in this demo for hardcoding your vars! Time to do this a little more properly.
 
-In the root directory of this folder is a file called .env. There are some entries commented out, pending the above mentioned changes, but the last 3 you should fill in with the appropriate values for your cloud account.
+In the root directory of this folder is a file called ```.env```. Fill in the last 3 values with the appropriate values for your cloud account.
 
 
 &nbsp;  

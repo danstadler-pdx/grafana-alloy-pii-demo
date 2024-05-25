@@ -1,18 +1,22 @@
-///////////////////////////////////////////////////////////////////////////////////
-// you can use a solution like this and the next component for quick debugging.
+///////////////////////////////////////////////////////////
+// You can use a solution like this for quick debugging.
 //
+// For example, you could sanity check that
+// you are passing in your vars correctly.
 
-// for example, you could sanity check that you are passing in env vars correctly.
 // declare "debugger" {
-//   argument "load_path" {
-// 	comment = ""
+//   argument "something_to_test" {
+// 	   comment = ""
 //   }
 // }
 // debugger "my_debugger" {
-// 	load_path = env("MASK_MODULE_PATH")
+// 	something_to_test = env("MASK_MODULE_REPOSITORY")
 // }
 
-///////////////////////////////////////////////////////////////////////////////////
+// With that in place, you can then bring up the Alloy
+// Graph UI, and see what Alloy sees as the value of
+// "something_to_test".
+///////////////////////////////////////////////////////////
 
 
 // this configures logging of Alloy itself
@@ -22,8 +26,11 @@ logging {
 }
 
 // Import our customized logs processor module...
-import.file "logs_module" {
-  filename = env("PROJECT_MODULE_PATH")
+import.git "logs_module" {
+  repository 		= env("LOGS_MODULE_REPOSITORY")
+  revision   		= env("LOGS_MODULE_REVISION")
+  path       		= env("LOGS_MODULE_PATH")
+  pull_frequency	= env("LOGS_MODULE_PULL_FREQUENCY")
 }
 // ...then configure it
 logs_module.my_log_processor "default" {
@@ -45,10 +52,30 @@ so you can see the more complex example.
 */
 
 
+
+/*
+In the next section we bring in the masking module. And like above with my-logs-processor, we are
+now demoing how to pull a module from a git repo.
+
+Even so, we are still using our own copy, not the original which is at:
+https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy
+
+In demo03-kubernetes we will migrate to using that actual alloy-modules repo, at a tagged version so
+we can expect it to remain stable as the modules project continues to be developed. With the
+alloy-modules project imported, we will be able to use the masking module it contains; as well
+as any other module contained in that repo.
+
+(Another option would be for you to fork the Alloy Modules git repo into a private repository of 
+your choice, and then have Alloy import it from there. This would give you greater control over 
+exactly what code you are importing into your own runtime environment.)
+*/
+
 // Import the Masking module...
-// https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy
-import.file "mask_module" {
-  filename = env("MASK_MODULE_PATH")
+import.git "mask_module" {
+  repository 		= env("MASK_MODULE_REPOSITORY")
+  revision   		= env("MASK_MODULE_REVISION")
+  path       		= env("MASK_MODULE_PATH")
+  pull_frequency	= env("MASK_MODULE_PULL_FREQUENCY")
 }
 // ...then configure the masking chain
 mask_module.mask_credit_card "mask_cc" {
