@@ -97,7 +97,7 @@ In your Grafana Cloud instance, go to Explore, switch to your Logs datasource (t
 token for), and look for your inbound logs. If you have not modified your filename or labels from the defaults
 provided in this demo, this LogQL query should work for you:
 
-``` {filename="/tmp/alloy-logs/loggerapp.log", job="loggerapp123"} ```
+``` {filename="/tmp/alloy-logs/loggerapp.log"} ```
 
 Assuming everything is working, you should be seeing log messages from loggerapp, with redactions where the configured regex rules have detected PII.
 
