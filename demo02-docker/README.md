@@ -72,3 +72,36 @@ If you already have Grafana Agent running in some other way on your machine, you
 Then run:
 ```docker-compose up```
 
+The first thing you'll see is that with docker-compose, you get a lot of log output from Alloy sent back into your terminal. Just let that run.
+
+&nbsp;  
+### 5) View logs in Grafana (same instructions as in demo01-homebrew)
+In your Grafana Cloud instance, go to Explore, switch to your Logs datasource (the same one you generated a write
+token for), and look for your inbound logs. If you have not modified your filename from the defaults
+provided in this demo, this LogQL query should work for you:
+
+``` {filename="/tmp/alloy-logs/loggerapp.log"} ```
+
+Assuming everything is working, you should be seeing log messages from loggerapp, with redactions where the configured regex rules have detected PII.
+
+![example of redacted logs in Grafana](../demo01-homebrew/images/example-redacted-logs.png)
+
+
+&nbsp;  
+### 6) Stop loggerapp and Alloy
+In the terminal where you ran docker-componse, use ctrl-c to stop the program.
+
+After the containers have stopped, you can also do a more proper teardown by entering:
+```docker-compose down```
+
+This can sometimes be helpful to clean up any resources left behind after a shutdown.
+
+Note that even after shutdown, the shared volume created by compose.yaml will still exist. You can see this by typing:
+```docker volume list```
+
+For more on volume management, [here are the documentation pages](https://docs.docker.com/storage/volumes/).
+
+&nbsp;  
+## Other notes
+
+### TODO some notes still to come here.
