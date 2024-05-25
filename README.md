@@ -1,5 +1,15 @@
 # grafana-alloy-pii-demo
-This repo helps you understand the process of using the [Alloy "mask module"](https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy) with Grafana Alloy.
+This repo was initially meant as a way to show Grafana users how to incorporate the PII masking solution contained in this [Alloy "mask module"](https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy).
+
+Along the way I learned a lot of new things about using Alloy, so maybe the demos included here will help others learn some of the same things.
+- Good general practices when using modules
+- Loading modules from remote locations (good for thinking about CICD pipelines)
+- Debugging while building alloy files
+- Deeper dive into Alloy's discovery mechanisms
+- The relationship between K8s annotations and Loki labels
+- Different "kinds" of annotations/labels; for example some labels can be designed only for shaping what happens in Alloy, but not end up in your log storage (therefore not influencing your Loki-side cardinality.)
+
+Please file issues and or PRs as you see opportunities for improvement.
 
 &nbsp;  
 ## General demo flow
