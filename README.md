@@ -24,6 +24,17 @@ PII use cases.
 
 
 &nbsp;  
+## Do you need go through them in order?
+
+While there are 3 separate demo options and you can in any one of them, there is also a forward progression
+of new topics that come in as you move through the demos in order 1 -> 2 -> 3. Therefore if you don't plan
+to go in that order, it is still recommended that you read through each demo's instructions so that you can
+at least see what it does, and perhaps peek into how its files look. 
+
+(Example: config.alloy goes through some adjustment between demos 1 and 2, so learning how it looks in 
+demo 1 can be helpful before looking at that file in demo 2.)
+
+&nbsp;  
 ## Demo Options
 
 ### 1 - demoing on MacOSX, using homebrew (FIRST STABLE VERSION AVAILABLE)
