@@ -1,0 +1,26 @@
+services:
+
+  loggerapp:
+    container_name: loggerapp
+    build: ../logger-app
+    volumes:
+      - loggerapp_logs:/tmp/alloy-logs
+
+  alloy:
+    container_name: alloy
+    image: grafana/alloy:latest
+    ports:
+      - "12345:12345"
+    env_file: .env
+    volumes:
+      - ./config.alloy:/etc/alloy/config.alloy
+      - loggerapp_logs:/tmp/alloy-logs
+    command: [
+      "run",
+      "--server.http.listen-addr=0.0.0.0:12345",
+      "--storage.path=/var/lib/alloy/data",
+      "/etc/alloy/config.alloy",
+    ]
+
+volumes:
+  loggerapp_logs:

@@ -41,9 +41,9 @@ demo 1 can be helpful before looking at that file in demo 2.)
 Please see the README file in the folder "demo01-homebrew".
 
 &nbsp;  
-### 2 - demoing via Docker (WORK IN PROGRESS)
+### 2 - demoing via Docker (FIRST STABLE VERSION AVAILABLE)
 Please see the README file in the folder "demo02-docker".
 
 &nbsp;  
-### 3 - demoing via Kubernetes (NOT STARTED)
+### 3 - demoing via Kubernetes (WORK IN PROGRESS)
 Please see the README file in the folder "demo03-kubernetes".
