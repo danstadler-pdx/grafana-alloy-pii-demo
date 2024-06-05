@@ -110,7 +110,7 @@ provided in this demo, this LogQL query should work for you (change the cluster 
 
 Assuming everything is working, you should be seeing log messages from loggerapp, with redactions where the configured regex rules have detected PII.
 
-![example of redacted logs in Grafana](images/example-redacted-logs.png)
+![example of redacted logs in Grafana](../demo01-homebrew/images/example-redacted-logs.png)
 
 
 &nbsp;  
