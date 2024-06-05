@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo03-loggerapp
+  labels:
+    app: demo03-loggerapp
+  annotations:
+    logs.grafana.com/mask_credit_card: "true"
+    logs.grafana.com/mask_email: "true"
+    logs.grafana.com/mask_ipv4: "true"
+    logs.grafana.com/mask_ipv6: "true"
+    logs.grafana.com/mask_phone: "true"
+    logs.grafana.com/mask_ssn: "true"
+spec:
+  containers:
+    - name: demo03-loggerapp
+      image: danstadler/demo02-docker-loggerapp
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          memory: 512Mi
+          cpu: "1"
+        requests:
+          memory: 256Mi
+          cpu: "1"
