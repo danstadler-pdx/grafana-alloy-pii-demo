@@ -1,1 +1,3 @@
 .DS_Store
+testingfiles/
+demo03-k8s/2-deploy-alloy-via-grafana-k8s-integration/values.yaml
