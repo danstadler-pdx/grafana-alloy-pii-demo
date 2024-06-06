@@ -12,6 +12,12 @@ Along the way I learned a lot of new things about using Alloy, so maybe the demo
 Please file issues and or PRs as you see opportunities for improvement.
 
 &nbsp;  
+## Key outcomes
+1) If you fast-forward to either demo 2 or demo 3, you will see a key outcome: *the configuration code you give to Alloy can be maintained in a central repository that you control*, and Alloy can be configured to pull that configuration down at boot time, and then re-poll the remote location for changes, on the interval you select. 
+
+(more key outcomes to be added here over time)
+
+&nbsp;  
 ## General demo flow
 In each of the demo options listed below, Grafana Alloy is deployed, along with a small "loggerapp" file 
 that generates some sample logs. You are given instructions on how to configure Alloy, which then reads the 
