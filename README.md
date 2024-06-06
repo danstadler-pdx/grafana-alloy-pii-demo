@@ -37,13 +37,13 @@ demo 1 can be helpful before looking at that file in demo 2.)
 &nbsp;  
 ## Demo Options
 
-### 1 - demoing on MacOSX, using homebrew (FIRST STABLE VERSION AVAILABLE)
+### 1 - demoing on MacOSX, using homebrew (STABLE)
 Please see the README file in the folder "demo01-homebrew".
 
 &nbsp;  
-### 2 - demoing via Docker (FIRST STABLE VERSION AVAILABLE)
+### 2 - demoing via Docker (STABLE)
 Please see the README file in the folder "demo02-docker".
 
 &nbsp;  
-### 3 - demoing via Kubernetes (WORK IN PROGRESS)
-Please see the README file in the folder "demo03-kubernetes".
+### 3 - demoing via Kubernetes (FIRST STABLE VERSION NOW AVAILABLE)
+Please see the README file in the folder "demo03-k8s".
