@@ -13,7 +13,7 @@ On the other hand, some things are different in this demo.
 
 2) Since we're on k8s, we deploy loggerapp with the proper k8s annotations needed to instruct the masking module that we want masking done on this container's logs.
 
-3) We're moving on to using [Grafana's k8s integration Helm project](https://github.com/grafana/k8s-monitoring-helm) for installing alloy. While doing this, we'll take a look at how to manage its configuration in a way that helps narrow the focus to just what we need, for learning purposes.
+3) We're moving on to using [Grafana's k8s integration Helm project](https://github.com/grafana/k8s-monitoring-helm) for installing alloy.
  
 
 &nbsp;  
@@ -35,9 +35,9 @@ You are welcome to do this any way you prefer. For the testing I've done with th
 3) [Install Helm](https://helm.sh/docs/intro/install/)
 4) [Install k9s]()
 
-If you prefer a different solution, just be sure that you can run basic "hello world" tests of all 3 of the solutions above.
+If you prefer a different solution, just be sure that you can run basic "hello world" tests of all the solutions above.
 
-At a few points through these instructions, I'll give pointers for those trying out solutions like k9s for the first time.
+At a few points through these instructions, I'll give pointers for those trying out k9s for the first time.
 
 
 &nbsp;  
@@ -46,11 +46,12 @@ The working directory for the next steps, unless mentioned otherwise, is ```demo
 
 For the current step we're on, there is a subdirectory: ```1-deploy-loggerapp```. This directory has the yaml file you'll need for starting loggerapp as a k8s pod.
 
-Before deploying loggerapp: take a quick look at ```[your clone directory]/logger-app/loggerapp.sh```; check out the new comments at the beginning and end of the file. For the prior demos, we were writing out the log data to a specific path/file. In this version, we are writing to stdout; k8s will route the log data to a standard location and Alloy will know to look there.)
+Before deploying loggerapp: take a quick look at ```[your clone directory]/logger-app/loggerapp.sh```; check out the new comments at the beginning and end of the file. For the prior demos, we were writing out the log data to a specific path/file. In this version, we are writing to stdout; k8s will route the log data to a standard location and Alloy will know to look there.
 
 An image of this "write to stdout" version of the code is already published and publicly available, so you won't have to build or publish this modified version yourself. [It is here](https://hub.docker.com/repository/docker/danstadler/demo02-docker-loggerapp/general).
 
 To start loggerapp, run this:
+
 ```kubectl apply -f 1-deploy-loggerapp/loggerapp.yaml```
 
 If using k9s, you can switch to ```pods```, click (i.e. hit the enter key) on the loggerapp pod, then again on the container itself, and you should see the logs printing out (not yet redacted - this is just the literal output coming from loggerapp.)
@@ -62,11 +63,12 @@ If using k9s, you can switch to ```pods```, click (i.e. hit the enter key) on th
 ### 3) Deploy the K8s integration
 Our next step is to deploy the [k8s monitoring](https://github.com/grafana/k8s-monitoring-helm) Helm project. We'll do this with all default values in place, so after this step, you'll see the loggerapps logs coming in to your cloud account, but they won't be redacted just yet.
 
-In the directory ```demo03-k8s/2-deploy-alloy-via-grafana-k8s-integration```, there is a reference-only example of a Helm values file called "value-original.yaml". To make your own version, you can go to your Grafana Cloud account, and to the K8s configuration section, generate your own testing token, and then save the resulting values file in the ```2-deploy-alloy-via-grafana-k8s-integration``` directory.
+In the directory ```demo03-k8s/2-deploy-alloy-via-grafana-k8s-integration```, there is an example of a Helm values file called "value-original.yaml". To make your own version, you can go to your Grafana Cloud account, and to the K8s configuration section, generate your own testing token, and then save the resulting values file in the ```2-deploy-alloy-via-grafana-k8s-integration``` directory with the filename "values.yaml".
 
 (Be sure to name your file "values.yaml". Note that this exact path/filename appears in this project's .gitignore, giving you a safety check on not commiting your own tokens or other identifying information into source control. But please continue to be careful with information like this.)
 
 Your next step is to deploy Grafana's k8s integration to your dashboard:
+
 ```helm install grafana-k8s-monitoring grafana/k8s-monitoring --namespace "default" --values ./2-deploy-alloy-via-grafana-k8s-integration/values.yaml```
 
 If you use k9s to watch the deployment (i.e. go to pods mode, watch the pods unfurl), you should first see the initial testing pod come up, then you should see the full Alloy deployment come up - a metrics pod, a logs pod for every node you are running, etc.
@@ -85,7 +87,9 @@ This means that we can use similar directions as in the above docs page, but the
 
 In [this section of the docs](https://grafana.com/docs/alloy/latest/tasks/configure/configure-kubernetes/#method-2-create-a-separate-configmap-from-a-file), you can see how it's possible to create a custom config map in a file you save locally, and then use helm commands to create a new config that uses that file. 
 
-In the directory ```demo03-k8s/3-modify-alloy-config```, there is already a file called "config.alloy". This file contains a recently generated version of an Alloy config (for a logs collection pod). (Because the k8s-monitoring-helm chart or the Alloy helm chart might change over time, these instructions might stop working at some point; in that case, consider looking at what the latest charts build, and compare that to what's still in this demo; file issues here as appropriate.) 
+In the directory ```demo03-k8s/3-modify-alloy-config```, there is already a file called "config.alloy". This file contains a recently generated version of an Alloy logs config, with some modifications, for example the ```import.git``` component you've seen in the prior demos.
+
+(Over time, the k8s-monitoring-helm chart or the Alloy helm chart will change. Therefore these instructions might stop working at some point; in that case, consider looking at what the latest charts build, and compare that to what's still in this demo; file issues here as appropriate.) 
 
 Note that you don't need to edit anything for ```demo03-k8s/3-modify-alloy-config/config.alloy``` file:
 1) The values to pull down the masking module code are hard-coded (but you could modify this setup to meet your needs), and
