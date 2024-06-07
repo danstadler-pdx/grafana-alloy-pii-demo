@@ -1,13 +1,5 @@
 # grafana-alloy-pii-demo
-This repo was initially meant as a way to show Grafana users how to incorporate the PII masking solution contained in this [Alloy "mask module"](https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy).
-
-Along the way I learned a lot of new things about using Alloy, so maybe the demos included here will help others learn some of the same things.
-- Good general practices when using modules
-- Loading modules from remote locations (good for thinking about CICD pipelines)
-- Debugging while building alloy files
-- Deeper dive into Alloy's discovery mechanisms
-- The relationship between K8s annotations and Loki labels
-- Different "kinds" of annotations/labels; for example some labels can be designed only for shaping what happens in Alloy, but not end up in your log storage (therefore not influencing your Loki-side cardinality.)
+This repo shows 3 examples of setting up Alloy (local machine, Docker, Kubernetes) alongside a small bash script ("loggerapp") that generates some log lines with common PII examples. In all the 3 cases, the code and accompanying notes show you how to configure Alloy to mask the PII, by incorporating the PII masking solution contained in this [Alloy "mask module"](https://github.com/grafana/alloy-modules/blob/main/modules/kubernetes/annotations/logs/mask.alloy).
 
 Please file issues and or PRs as you see opportunities for improvement.
 
@@ -53,3 +45,14 @@ Please see [the README file in the folder "demo02-docker"](./demo02-docker).
 &nbsp;  
 ### 3 - demoing via Kubernetes (FIRST STABLE VERSION NOW AVAILABLE)
 Please see [the README file in the folder "demo03-k8s"](./demo03-k8s).
+
+&nbsp;  
+## Additional learnings
+This repo was initially meant to just quickly demo those 3 paths. However, along the way I learned a lot of new things about using Alloy, so maybe the demos included here will help others learn some of the same things.
+- Good general practices when using modules
+- Loading modules from remote locations (good for thinking about CICD pipelines)
+- Debugging while building alloy files
+- Deeper dive into Alloy's discovery mechanisms
+- The relationship between K8s annotations and Loki labels
+- Different "kinds" of annotations/labels; for example some labels can be designed only for shaping what happens in Alloy, but not end up in your log storage (therefore not influencing your Loki-side cardinality.)
+
