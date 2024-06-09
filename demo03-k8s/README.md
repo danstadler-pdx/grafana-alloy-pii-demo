@@ -54,8 +54,9 @@ To start loggerapp, run this:
 
 ```kubectl apply -f 1-deploy-loggerapp/loggerapp.yaml```
 
-If using k9s, you can switch to ```pods```, click (i.e. hit the enter key) on the loggerapp pod, then again on the container itself, and you should see the logs printing out (not yet redacted - this is just the literal output coming from loggerapp.)
+> If this doesn't work for you, and you are trying this on another OS/hardware than OSX/M1, then [you might run into this issue](https://github.com/danstadler-pdx/grafana-alloy-pii-demo/issues/1). Support for other platforms will be added over time, but in the meantime, you can build and publish loggerapp from your own machine, and update your config to use your published image. [This step of the Docker Tutorial](https://docs.docker.com/get-started/04_sharing_app/) is a great starting point.
 
+If using k9s, you can switch to ```pods```, click (i.e. hit the enter key) on the loggerapp pod, then again on the container itself, and you should see the logs printing out (not yet redacted - this is just the literal output coming from loggerapp.)
 
 
 
